@@ -1,10 +1,37 @@
-import { createContext } from "react";
+import { createContext, useState, useEffect } from "react";
+import questions from "../questions.json";
 
 export const UsersContext = createContext();
 
-const test = [2, 4, 7];
 const UsersProvider = (props) => {
-  const values = { test };
+  const [gameStarted, setGameStarted] = useState(false);
+  const [questionNum, setQuestionNum] = useState(1);
+  const [questionsUsed, setQuestionsUsed] = useState([]);
+  const [currentQuestion, setCurrentQuestion] = useState(null);
+
+  const pickQuestion = () => {
+    // while(questionsUsed){
+    console.log("pickQuestion");
+
+    const questionNumToCheck = Math.floor(
+      Math.random() * questions.questions.length
+    );
+    // }
+    setCurrentQuestion(questions.questions[questionNumToCheck]);
+  };
+
+  useEffect(() => {
+    console.log(currentQuestion);
+  }, [currentQuestion]);
+
+  const values = {
+    gameStarted,
+    setGameStarted,
+    questionNum,
+    setQuestionNum,
+    pickQuestion,
+    currentQuestion,
+  };
 
   return (
     <UsersContext.Provider value={values}>

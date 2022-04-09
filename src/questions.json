@@ -1,0 +1,28 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "question": "Who is this?",
+      "rightAnswer": "Me",
+      "wrongAnswers": ["Not me", "Way off", "Just... no"]
+    },
+    {
+      "id": 2,
+      "question": "Who am I?",
+      "rightAnswer": "You",
+      "wrongAnswers": ["Not you", "Nope", "Yes, but no"]
+    },
+    {
+      "id": 3,
+      "question": "Why are you?",
+      "rightAnswer": "Because",
+      "wrongAnswers": ["Don't know", "Don't care", "A mystary"]
+    },
+    {
+      "id": 4,
+      "question": "What time is it?",
+      "rightAnswer": "Now",
+      "wrongAnswers": ["Then", "Later", "Before"]
+    }
+  ]
+}
