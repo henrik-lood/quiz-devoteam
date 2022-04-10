@@ -10,6 +10,8 @@ function App() {
     questionNum,
     currentQuestion,
     pickQuestion,
+    myAnswers,
+    roundsToGo,
   } = useContext(UsersContext);
   
   useEffect(()=>{
@@ -21,7 +23,17 @@ function App() {
   return (
     <div className="App">
       { !gameStarted && <Button text={"Start quiz!"} className={"startbutton"} onClick={() => setGameStarted(true)}/>}
-      { gameStarted && currentQuestion && questionNum <= 10 && <QuestionCard question={currentQuestion} questionNum={questionNum}/> }
+      { gameStarted && currentQuestion && questionNum < roundsToGo && <QuestionCard question={currentQuestion} questionNum={questionNum}/> }
+      { !gameStarted && questionNum >= roundsToGo &&
+        <>
+          <h1>How did you do?</h1>
+          <div>
+            <h2>{`Right answers: ${myAnswers.right}`}</h2>
+            <h2>{`Wrong answers: ${myAnswers.wrong}`}</h2>
+            <h2>{`Unanswered answers: ${myAnswers.unanswered}`}</h2>
+          </div>
+        </>
+      }
     </div>
   );
 }

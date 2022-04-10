@@ -4,17 +4,21 @@ import { Button } from "../components/Button";
 import { UsersContext } from "../contexts/UsersContext";
 
 export const QuestionCard = ({ questionNum, question }) => {
-  const { pickQuestion } = useContext(UsersContext);
+  const { addToCount, myAnswers, setMyAnswers } = useContext(UsersContext);
 
   const allOptions = shuffle([...question.wrongAnswers, question.rightAnswer]);
 
   const checkAnswer = (answer) => {
     if (question.rightAnswer === answer) {
       console.log("right!");
+      myAnswers.right++;
+      setMyAnswers({ ...myAnswers });
     } else {
       console.log("wrong!");
+      myAnswers.wrong++;
+      setMyAnswers({ ...myAnswers });
     }
-    pickQuestion();
+    addToCount();
   };
 
   return (
