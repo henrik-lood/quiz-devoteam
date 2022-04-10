@@ -1,28 +1,14 @@
 import React, { useContext } from "react";
-import { shuffle } from "../calculations";
 import { Button } from "../components/Button";
 import { UsersContext } from "../contexts/UsersContext";
-
+import { Timer } from "./Timer";
 export const QuestionCard = ({ questionNum, question }) => {
-  const { addToCount, myAnswers, setMyAnswers } = useContext(UsersContext);
-
-  const allOptions = shuffle([...question.wrongAnswers, question.rightAnswer]);
-
-  const checkAnswer = (answer) => {
-    if (question.rightAnswer === answer) {
-      console.log("right!");
-      myAnswers.right++;
-      setMyAnswers({ ...myAnswers });
-    } else {
-      console.log("wrong!");
-      myAnswers.wrong++;
-      setMyAnswers({ ...myAnswers });
-    }
-    addToCount();
-  };
+  const { allOptions, timeLeft, setTimeLeft, checkAnswer } =
+    useContext(UsersContext);
 
   return (
     <>
+      <Timer timeLeft={timeLeft} setTimeLeft={setTimeLeft} />
       <h1>{`Question ${questionNum}`}</h1>
       <div className="questionContainer">
         <h2>{question.question}</h2>

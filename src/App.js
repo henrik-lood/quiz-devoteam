@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import { UsersContext } from "./contexts/UsersContext";
 import { Button } from './components/Button'
 import { QuestionCard } from './components/QuestionCard';
@@ -9,21 +9,18 @@ function App() {
     setGameStarted,
     questionNum,
     currentQuestion,
-    pickQuestion,
     myAnswers,
     roundsToGo,
   } = useContext(UsersContext);
-  
-  useEffect(()=>{
-    if(gameStarted){
-      pickQuestion()
-    }
-  }, [gameStarted])
 
   return (
     <div className="App">
       { !gameStarted && <Button text={"Start quiz!"} className={"startbutton"} onClick={() => setGameStarted(true)}/>}
-      { gameStarted && currentQuestion && questionNum < roundsToGo && <QuestionCard question={currentQuestion} questionNum={questionNum}/> }
+      { gameStarted && currentQuestion && questionNum < roundsToGo &&
+      <>
+        <QuestionCard question={currentQuestion} questionNum={questionNum}/>
+      </>
+      }
       { !gameStarted && questionNum >= roundsToGo &&
         <>
           <h1>How did you do?</h1>
