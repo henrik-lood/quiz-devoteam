@@ -5,35 +5,66 @@ import { shuffle } from "../calculations";
 export const UsersContext = createContext();
 
 const UsersProvider = (props) => {
+  const roundTime = 5;
+  const roundsToGo = 4;
   const [gameStarted, setGameStarted] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(roundTime);
   const [questionNum, setQuestionNum] = useState(1);
   const [currentQuestion, setCurrentQuestion] = useState(null);
   const [allOptions, setAllOptions] = useState(null);
   const [usedQuestions, setUsedQuestions] = useState([]);
-  const [timeLeft, setTimeLeft] = useState(15);
-  const roundsToGo = 4;
   const [myAnswers, setMyAnswers] = useState({
     wrong: 0,
     right: 0,
     unanswered: 0,
   });
 
-  const addToCount = () => {
-    setQuestionNum(questionNum + 1);
-  };
+  useEffect(() => {
+    if (gameStarted) {
+      setQuestionNum(1);
+      setMyAnswers({
+        wrong: 0,
+        right: 0,
+        unanswered: 0,
+      });
+      setUsedQuestions([]);
+    }
+  }, [gameStarted]);
 
   useEffect(() => {
+    //after one question is answered, shoud a new be given, or shoud game end?
     if (questionNum < roundsToGo) {
       pickQuestion();
     } else {
       setGameStarted(false);
     }
-    console.log(questionNum);
   }, [questionNum]);
 
-  const pickQuestion = () => {
-    console.log(myAnswers);
+  useEffect(() => {
+    //when a new question is picked, shuffle the answers
+    if (currentQuestion !== null) {
+      setAllOptions(
+        shuffle([...currentQuestion.wrongAnswers, currentQuestion.rightAnswer])
+      );
+    }
+  }, [currentQuestion]);
 
+  useEffect(() => {
+    //if time runs out for a question
+    if (timeLeft === 0) {
+      console.log("unanswered!");
+      myAnswers.unanswered++;
+      setMyAnswers({ ...myAnswers });
+      setTimeLeft(roundTime);
+      addToRoundCount();
+    }
+  }, [timeLeft]);
+
+  const addToRoundCount = () => {
+    setQuestionNum(questionNum + 1); //increase round count
+  };
+
+  const pickQuestion = () => {
     let questionNumToCheck;
     do {
       questionNumToCheck = Math.floor(
@@ -44,33 +75,17 @@ const UsersProvider = (props) => {
     setUsedQuestions([...usedQuestions, questionNumToCheck]);
   };
 
-  useEffect(() => {
-    if (currentQuestion !== null) {
-      setAllOptions(
-        shuffle([...currentQuestion.wrongAnswers, currentQuestion.rightAnswer])
-      );
-    }
-  }, [currentQuestion]);
-
   const checkAnswer = (answer) => {
     if (currentQuestion.rightAnswer === answer) {
-      console.log("right!");
       myAnswers.right++;
       setMyAnswers({ ...myAnswers });
     } else {
-      console.log("wrong!");
       myAnswers.wrong++;
       setMyAnswers({ ...myAnswers });
     }
-    addToCount();
-    setTimeLeft(15);
+    setTimeLeft(roundTime);
+    addToRoundCount();
   };
-
-  useEffect(() => {
-    if (gameStarted) {
-      pickQuestion();
-    }
-  }, [gameStarted]);
 
   const values = {
     gameStarted,
@@ -79,7 +94,6 @@ const UsersProvider = (props) => {
     setQuestionNum,
     pickQuestion,
     currentQuestion,
-    addToCount,
     myAnswers,
     setMyAnswers,
     roundsToGo,
