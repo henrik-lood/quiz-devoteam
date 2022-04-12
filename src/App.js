@@ -11,6 +11,11 @@ function App() {
     currentQuestion,
     myAnswers,
     roundsToGo,
+    addTime,
+    timeToAdd,
+    usedAddTime,
+    fiftyFifty,
+    usedFiftyFifty,
   } = useContext(UsersContext);
 
   return (
@@ -21,6 +26,9 @@ function App() {
         <QuestionCard question={currentQuestion} questionNum={questionNum}/>
       </>
       }
+      { gameStarted && !usedAddTime && <Button text={"+10 sec"} className={"lifeline"} onClick={() => addTime(timeToAdd)}/>}
+      { gameStarted && !usedFiftyFifty && <Button text={"50/50"} className={"lifeline"} onClick={() => fiftyFifty()}/>}
+      
       { !gameStarted && questionNum >= roundsToGo &&
         <>
           <h1>How did you do?</h1>

@@ -18,6 +18,9 @@ const UsersProvider = (props) => {
     right: 0,
     unanswered: 0,
   });
+  const timeToAdd = 10;
+  const [usedAddTime, setUsedAddTime] = useState(false);
+  const [usedFiftyFifty, setUsedFiftyFifty] = useState(false);
 
   useEffect(() => {
     if (gameStarted) {
@@ -28,6 +31,8 @@ const UsersProvider = (props) => {
         unanswered: 0,
       });
       setUsedQuestions([]);
+      setUsedAddTime(false);
+      setUsedFiftyFifty(false);
     }
   }, [gameStarted]);
 
@@ -87,6 +92,26 @@ const UsersProvider = (props) => {
     addToRoundCount();
   };
 
+  const addTime = (time) => {
+    setTimeLeft(timeLeft + time);
+    setUsedAddTime(true);
+  };
+
+  const fiftyFifty = () => {
+    console.log(allOptions);
+    console.log(currentQuestion);
+    const indexToUse = Math.floor(
+      Math.random() * currentQuestion.wrongAnswers.length
+    );
+    setAllOptions(
+      shuffle([
+        currentQuestion.rightAnswer,
+        currentQuestion.wrongAnswers[indexToUse],
+      ])
+    );
+    setUsedFiftyFifty(true);
+  };
+
   const values = {
     gameStarted,
     setGameStarted,
@@ -101,6 +126,11 @@ const UsersProvider = (props) => {
     setTimeLeft,
     checkAnswer,
     allOptions,
+    addTime,
+    timeToAdd,
+    usedAddTime,
+    fiftyFifty,
+    usedFiftyFifty,
   };
 
   return (
