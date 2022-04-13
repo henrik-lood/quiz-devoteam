@@ -1,0 +1,28 @@
+.appContainerStart,
+.appContainerResult {
+  height: 100vh;
+  background-color: rgb(220, 247, 247);
+}
+
+.appContainerStart {
+  display: flex;
+  justify-content: center;
+}
+
+.appContainerResult {
+  margin: 0 auto;
+}
+
+.questionContainer {
+  width: 60%;
+}
+
+.buttonContainerRestart {
+  display: flex;
+  justify-content: center;
+}
+
+.lifelineContainer {
+  display: flex;
+  justify-content: space-between;
+}

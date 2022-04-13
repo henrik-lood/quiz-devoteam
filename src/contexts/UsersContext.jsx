@@ -5,8 +5,8 @@ import { shuffle } from "../calculations";
 export const UsersContext = createContext();
 
 const UsersProvider = (props) => {
-  const roundTime = 5;
-  const roundsToGo = 4;
+  const roundTime = 15; //sec
+  const roundsToGo = 10;
   const [gameStarted, setGameStarted] = useState(false);
   const [timeLeft, setTimeLeft] = useState(roundTime);
   const [questionNum, setQuestionNum] = useState(1);
@@ -18,9 +18,9 @@ const UsersProvider = (props) => {
     right: 0,
     unanswered: 0,
   });
-  const timeToAdd = 10;
-  const [usedAddTime, setUsedAddTime] = useState(false);
-  const [usedFiftyFifty, setUsedFiftyFifty] = useState(false);
+  const timeToAdd = 10; //sec
+  const [addTimeAvailable, setAddTimeAvailable] = useState(true);
+  const [fiftyFiftyAvailable, setFiftyFiftyAvailable] = useState(true);
 
   useEffect(() => {
     if (gameStarted) {
@@ -31,14 +31,14 @@ const UsersProvider = (props) => {
         unanswered: 0,
       });
       setUsedQuestions([]);
-      setUsedAddTime(false);
-      setUsedFiftyFifty(false);
+      setAddTimeAvailable(true);
+      setFiftyFiftyAvailable(true);
     }
   }, [gameStarted]);
 
   useEffect(() => {
     //after one question is answered, shoud a new be given, or shoud game end?
-    if (questionNum < roundsToGo) {
+    if (questionNum <= roundsToGo) {
       pickQuestion();
     } else {
       setGameStarted(false);
@@ -57,7 +57,6 @@ const UsersProvider = (props) => {
   useEffect(() => {
     //if time runs out for a question
     if (timeLeft === 0) {
-      console.log("unanswered!");
       myAnswers.unanswered++;
       setMyAnswers({ ...myAnswers });
       setTimeLeft(roundTime);
@@ -94,12 +93,10 @@ const UsersProvider = (props) => {
 
   const addTime = (time) => {
     setTimeLeft(timeLeft + time);
-    setUsedAddTime(true);
+    setAddTimeAvailable(false);
   };
 
   const fiftyFifty = () => {
-    console.log(allOptions);
-    console.log(currentQuestion);
     const indexToUse = Math.floor(
       Math.random() * currentQuestion.wrongAnswers.length
     );
@@ -109,7 +106,7 @@ const UsersProvider = (props) => {
         currentQuestion.wrongAnswers[indexToUse],
       ])
     );
-    setUsedFiftyFifty(true);
+    setFiftyFiftyAvailable(false);
   };
 
   const values = {
@@ -127,10 +124,12 @@ const UsersProvider = (props) => {
     checkAnswer,
     allOptions,
     addTime,
+    addTimeAvailable,
+    setAddTimeAvailable,
+    fiftyFiftyAvailable,
+    setFiftyFiftyAvailable,
     timeToAdd,
-    usedAddTime,
     fiftyFifty,
-    usedFiftyFifty,
   };
 
   return (

@@ -1,4 +1,6 @@
 import React, { useEffect } from "react";
+import styles from "./Timer.module.css";
+
 export const Timer = ({ timeLeft, setTimeLeft }) => {
   const interval = 1000;
 
@@ -12,5 +14,5 @@ export const Timer = ({ timeLeft, setTimeLeft }) => {
     }
   }, [timeLeft]);
 
-  return <div>Time left: {timeLeft}</div>;
+  return <div className={styles.timer}>Time left: {timeLeft}</div>;
 };

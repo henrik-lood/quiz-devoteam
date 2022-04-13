@@ -1,7 +1,9 @@
-import { useContext } from 'react'
+import React, { useContext } from 'react'
 import { UsersContext } from "./contexts/UsersContext";
 import { Button } from './components/Button'
 import { QuestionCard } from './components/QuestionCard';
+import styles from './App.module.css'
+import {Results} from './components/Results'
 
 function App() {
   const { 
@@ -11,34 +13,33 @@ function App() {
     currentQuestion,
     myAnswers,
     roundsToGo,
-    addTime,
     timeToAdd,
-    usedAddTime,
+    addTimeAvailable,
+    fiftyFiftyAvailable,
+    addTime,
     fiftyFifty,
-    usedFiftyFifty,
   } = useContext(UsersContext);
 
   return (
-    <div className="App">
-      { !gameStarted && <Button text={"Start quiz!"} className={"startbutton"} onClick={() => setGameStarted(true)}/>}
-      { gameStarted && currentQuestion && questionNum < roundsToGo &&
-      <>
-        <QuestionCard question={currentQuestion} questionNum={questionNum}/>
-      </>
-      }
-      { gameStarted && !usedAddTime && <Button text={"+10 sec"} className={"lifeline"} onClick={() => addTime(timeToAdd)}/>}
-      { gameStarted && !usedFiftyFifty && <Button text={"50/50"} className={"lifeline"} onClick={() => fiftyFifty()}/>}
+    <div className={questionNum > roundsToGo ? styles.appContainerResult : styles.appContainerStart}>
       
+        { gameStarted && currentQuestion && questionNum <= roundsToGo &&
+      <div className={styles.questionContainer}>
+          <QuestionCard question={currentQuestion} questionNum={questionNum}/>
+        <div className={styles.lifelineContainer}>
+          { gameStarted && <Button text={"+10 sec"} className={"lifeline"} onClick={() => addTime(timeToAdd)} disabled={!addTimeAvailable}/>}
+          { gameStarted && <Button text={"50/50"} className={"lifeline"} onClick={() => fiftyFifty()} disabled={!fiftyFiftyAvailable}/>}
+        </div>
+      </div>
+        }
       { !gameStarted && questionNum >= roundsToGo &&
-        <>
-          <h1>How did you do?</h1>
-          <div>
-            <h2>{`Right answers: ${myAnswers.right}`}</h2>
-            <h2>{`Wrong answers: ${myAnswers.wrong}`}</h2>
-            <h2>{`Unanswered answers: ${myAnswers.unanswered}`}</h2>
-          </div>
-        </>
+      <Results className={styles.resultsContainer} myAnswers={myAnswers}/>
       }
+      { !gameStarted && 
+      <div className={questionNum > roundsToGo ? styles.buttonContainerRestart : styles.buttonContainerStart}>
+        <Button text={questionNum > roundsToGo ? "Quiz again!" : "Start quiz!"} className={questionNum > roundsToGo ? "restartButton" : "startButton"} onClick={() => setGameStarted(true)}/>
+        </div>
+        }
     </div>
   );
 }

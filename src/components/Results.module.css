@@ -1,0 +1,18 @@
+.resultHeading {
+  padding: 3rem 0;
+  text-align: center;
+}
+
+.resultsContainer {
+  padding-left: 2rem;
+  width: 40%;
+  margin: 0 auto;
+}
+
+.answers {
+  padding-bottom: 1rem;
+}
+
+.number {
+  float: right;
+}
