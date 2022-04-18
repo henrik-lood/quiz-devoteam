@@ -15,7 +15,7 @@ export const Results = ({ myAnswers }) => {
           <span className={styles.number}> {` ${myAnswers.wrong}`}</span>
         </h2>
         <h2 className={styles.answers}>
-          {`Unanswered answers:`}{" "}
+          {`Unanswered:`}{" "}
           <span className={styles.number}>{` ${myAnswers.unanswered}`}</span>
         </h2>
       </div>

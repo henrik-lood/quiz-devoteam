@@ -1,6 +1,5 @@
 import { createContext, useState, useEffect } from "react";
 import questions from "../questions.json";
-import { shuffle } from "../calculations";
 
 export const UsersContext = createContext();
 
@@ -107,6 +106,20 @@ const UsersProvider = (props) => {
       ])
     );
     setFiftyFiftyAvailable(false);
+  };
+
+  const shuffle = (array) => {
+    let currentIndex = array.length,
+      randomIndex;
+    while (currentIndex != 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex],
+        array[currentIndex],
+      ];
+    }
+    return array;
   };
 
   const values = {
